@@ -1,140 +1,202 @@
 "use client";
 
-import { Search, Bell, Shield, FileText, Check, X, AlertTriangle } from "lucide-react";
+import { useState } from "react";
+import { Search, Bell, ShieldAlert, CheckCircle2, XCircle, FileText, CalendarDays, User, Award, Check, X, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+
+interface SupervisorAppealItem {
+  id: string;
+  memberName: string;
+  memberNPA: string;
+  submittedAt: string;
+  status: "submitted" | "under_review" | "approved" | "rejected";
+  reason: string;
+  claimedEvents: string;
+  supervisorNotes?: string;
+  avatar: string;
+}
+
+const initialAppeals: SupervisorAppealItem[] = [
+  {
+    id: "app-101",
+    memberName: "Dwi Ishak M.",
+    memberNPA: "LIO-08013",
+    submittedAt: "01 Sept 2026",
+    status: "under_review",
+    reason: "Pencatatan presensi Forum Bulan Maret tidak terinput akibat kendala scanner jaringan lokasi. Saya melampirkan foto presensi fisik dan saksi fasilitator.",
+    claimedEvents: "Forum Berkala Batch 12 (18 Sept 2026)",
+    avatar: "https://github.com/shadcn.png",
+  },
+  {
+    id: "app-102",
+    memberName: "Hendra Pratama",
+    memberNPA: "LIO-07033",
+    submittedAt: "02 Sept 2026",
+    status: "submitted",
+    reason: "Partisipasi saya sebagai panitia workshop resolusi konflik belum terakumulasi di sistem evaluasi keaktifan MR-03.",
+    claimedEvents: "Panitia Workshop Resolusi Konflik",
+    avatar: "https://i.pravatar.cc/150?u=hendra",
+  }
+];
 
 export default function AdminAppealsPage() {
+  const [appeals, setAppeals] = useState<SupervisorAppealItem[]>(initialAppeals);
+  const [selectedAppealId, setSelectedAppealId] = useState<string | null>("app-101");
+  const [supervisorNotesInput, setSupervisorNotesInput] = useState("");
+
+  const activeAppeal = appeals.find(a => a.id === selectedAppealId) || appeals[0];
+
+  const handleApprove = (id: string) => {
+    setAppeals(prev => prev.map(a => {
+      if (a.id !== id) return a;
+      return { ...a, status: "approved", supervisorNotes: supervisorNotesInput || "Banding disetujui. Status keaktifan dipulihkan ke Anggota Aktif." };
+    }));
+    setSupervisorNotesInput("");
+  };
+
+  const handleReject = (id: string) => {
+    setAppeals(prev => prev.map(a => {
+      if (a.id !== id) return a;
+      return { ...a, status: "rejected", supervisorNotes: supervisorNotesInput || "Banding ditolak setelah bukti dokumen diklarifikasi." };
+    }));
+    setSupervisorNotesInput("");
+  };
+
   return (
     <div className="flex h-full w-full bg-white rounded-tl-[40px] shadow-sm my-4 mr-4 border overflow-hidden">
       
-      {/* SECONDARY SIDEBAR (Appeals Queue) */}
+      {/* SECONDARY SIDEBAR (Appeals Inbox) */}
       <div className="w-80 border-r bg-white flex flex-col">
-        <div className="p-6 border-b bg-amber-50/30">
-          <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-            <Shield className="w-5 h-5 text-amber-600" />
-            Review Banding
-          </h2>
-          <p className="text-xs text-gray-500 mt-1">Konsol Khusus Pengawas</p>
+        <div className="p-6 border-b bg-teal-50/50">
+          <span className="text-[10px] font-extrabold text-[#0eb7b7] bg-teal-100 border border-teal-200 px-2.5 py-1 rounded-full uppercase">
+            MR-04 Console
+          </span>
+          <h2 className="text-xl font-bold text-gray-900 mt-2">Inbox Banding</h2>
+          <p className="text-xs text-gray-500 mt-1">Pemeriksaan Keberatan Dewan Pengawas</p>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 space-y-2">
-          {/* Item 1 */}
-          <div className="p-4 rounded-2xl bg-[#0eb7b7]/10 border border-[#0eb7b7] cursor-pointer transition-colors">
-            <div className="flex justify-between items-start mb-2">
-              <span className="text-[10px] font-bold text-[#0eb7b7] uppercase tracking-wider">Menunggu Review</span>
-              <span className="text-[10px] font-bold text-gray-500">2 jam lalu</span>
-            </div>
-            <h3 className="font-bold text-gray-900 leading-tight mb-1">Dwi Ishak M.</h3>
-            <p className="text-xs text-gray-500">Evaluasi 2026 • LIO-08</p>
-          </div>
+          {appeals.map((appeal) => {
+            const isActive = appeal.id === selectedAppealId;
+            return (
+              <div 
+                key={appeal.id}
+                onClick={() => setSelectedAppealId(appeal.id)}
+                className={`p-4 rounded-2xl cursor-pointer transition-all border relative ${
+                  isActive ? "bg-[#0eb7b7]/10 border-[#0eb7b7] shadow-sm" : "border-transparent hover:bg-gray-50 opacity-80"
+                }`}
+              >
+                <div className="flex justify-between items-start mb-1.5">
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                    appeal.status === "approved" ? "bg-green-100 text-green-800" :
+                    appeal.status === "rejected" ? "bg-red-100 text-red-800" : "bg-amber-100 text-amber-800"
+                  }`}>
+                    {appeal.status === "under_review" ? "Perlu Review" : appeal.status}
+                  </span>
+                  <span className="text-[10px] text-gray-400 font-bold">{appeal.submittedAt}</span>
+                </div>
 
-          {/* Item 2 */}
-          <div className="p-4 rounded-2xl border border-transparent hover:bg-gray-50 cursor-pointer transition-colors opacity-70">
-            <div className="flex justify-between items-start mb-2">
-              <span className="text-[10px] font-bold text-green-600 bg-green-100 px-2 rounded-full uppercase tracking-wider">Disetujui</span>
-              <span className="text-[10px] font-bold text-gray-400">Kemarin</span>
-            </div>
-            <h3 className="font-bold text-gray-700 leading-tight mb-1">Rina Kusuma</h3>
-            <p className="text-xs text-gray-400">Evaluasi 2026 • LIO-10</p>
-          </div>
+                <h4 className="font-bold text-gray-900 text-sm leading-tight">{appeal.memberName}</h4>
+                <p className="text-[10px] text-gray-500 font-medium">{appeal.memberNPA}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* MAIN CONTENT AREA */}
+      {/* MAIN CONTENT AREA (Supervisor Audit Panel) */}
       <div className="flex-1 flex flex-col bg-[#fcfdfd]">
         <div className="h-20 border-b flex items-center justify-between px-8 bg-white">
-          <div className="relative w-96">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <Input 
-              type="search" 
-              placeholder="Cari pengajuan..." 
-              className="w-full rounded-full bg-gray-50 border-gray-200 pl-10 shadow-inner text-sm focus-visible:ring-1 focus-visible:ring-amber-500" 
-            />
-          </div>
+          <h1 className="text-xl font-black text-gray-900">Audit & Keputusan Dewan Pengawas (MR-04)</h1>
           
-          <div className="flex items-center gap-6">
-            <div className="relative cursor-pointer hover:bg-gray-50 p-2 rounded-full transition-colors">
-              <Bell className="h-5 w-5 text-gray-600" />
-            </div>
-            <div className="flex items-center gap-3 pl-4 border-l cursor-pointer group">
-              <div className="text-right">
-                <p className="text-sm font-bold text-gray-800">Budi Santoso</p>
-                <p className="text-xs font-bold text-amber-600">Dewan Pengawas</p>
-              </div>
-              <Avatar className="h-10 w-10 border-2 border-transparent group-hover:border-amber-500 transition-all">
-                <AvatarImage src="https://i.pravatar.cc/150?u=3" />
-                <AvatarFallback>BS</AvatarFallback>
-              </Avatar>
+          <div className="flex items-center gap-3">
+            <Avatar className="h-10 w-10 border-2 border-[#0eb7b7]">
+              <AvatarFallback className="bg-slate-900 text-white font-bold">DP</AvatarFallback>
+            </Avatar>
+            <div className="text-right">
+              <p className="text-xs font-bold text-gray-900">Dewan Pengawas</p>
+              <p className="text-[10px] text-gray-400">Komite Banding Keaktifan</p>
             </div>
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-10">
-          <div className="max-w-3xl mx-auto">
+        {activeAppeal ? (
+          <div className="flex-1 overflow-y-auto p-10 space-y-6 max-w-4xl mx-auto w-full">
             
-            <div className="bg-white border rounded-3xl p-8 shadow-sm">
-              <div className="flex items-start justify-between border-b pb-6 mb-6">
-                <div className="flex items-center gap-4">
-                  <Avatar className="h-16 w-16 border-2 border-gray-100">
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                  </Avatar>
-                  <div>
-                    <h2 className="text-2xl font-extrabold text-gray-900">Dwi Ishak M. Wibowo</h2>
-                    <p className="text-gray-500 font-medium">PKDI-2026-08013 • LIO-08</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-xs font-bold text-gray-400 uppercase">Status Pengajuan</p>
-                  <p className="text-sm font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full mt-1 inline-block">Menunggu Review</p>
+            {/* Member Profile Header */}
+            <div className="bg-white border rounded-3xl p-6 shadow-sm flex justify-between items-center">
+              <div className="flex items-center gap-4">
+                <Avatar className="h-14 w-14 border">
+                  <AvatarImage src={activeAppeal.avatar} />
+                  <AvatarFallback>{activeAppeal.memberName[0]}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <h2 className="text-xl font-extrabold text-gray-900">{activeAppeal.memberName}</h2>
+                  <p className="text-xs text-gray-500 font-medium">{activeAppeal.memberNPA} • Diajukan {activeAppeal.submittedAt}</p>
                 </div>
               </div>
 
-              <div className="space-y-6">
-                <div>
-                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Alasan Banding (Dari Anggota)</h4>
-                  <div className="bg-gray-50 p-4 rounded-xl text-gray-700 text-sm leading-relaxed border border-gray-100">
-                    "Saya hadir di Forum Belajar bulan Maret 2026 secara offline, namun saat itu sistem QR Code sedang mengalami gangguan sehingga presensi saya tidak tercatat oleh mesin. Saya telah melampirkan foto kehadiran saya di ruangan."
-                  </div>
-                </div>
+              <span className={`text-xs font-extrabold px-3.5 py-1.5 rounded-full uppercase border ${
+                activeAppeal.status === "approved" ? "bg-green-50 text-green-700 border-green-200" :
+                activeAppeal.status === "rejected" ? "bg-red-50 text-red-700 border-red-200" : "bg-amber-50 text-amber-700 border-amber-200"
+              }`}>
+                Status: {activeAppeal.status}
+              </span>
+            </div>
 
-                <div>
-                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Lampiran Bukti</h4>
-                  <div className="flex gap-3">
-                    <div className="border rounded-xl p-3 flex items-center gap-3 w-64 hover:bg-gray-50 cursor-pointer transition-colors">
-                      <div className="bg-blue-50 text-blue-600 p-2 rounded-lg">
-                        <FileText className="w-5 h-5" />
-                      </div>
-                      <div className="overflow-hidden">
-                        <p className="text-sm font-bold text-gray-800 truncate">foto_kehadiran_maret.jpg</p>
-                        <p className="text-xs text-gray-400">1.2 MB</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            {/* Claimed Reason Box */}
+            <div className="bg-white border rounded-3xl p-6 shadow-sm space-y-3">
+              <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Rincian Alasan Banding Anggota</h3>
+              <p className="text-gray-800 text-sm leading-relaxed bg-gray-50 p-4 rounded-2xl border">
+                "{activeAppeal.reason}"
+              </p>
+              <p className="text-xs text-[#0eb7b7] font-bold">Kegiatan Terkait: {activeAppeal.claimedEvents}</p>
+            </div>
 
-                <div className="border-t pt-6 mt-6">
-                  <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Keputusan Pengawas</h4>
-                  <textarea 
-                    className="w-full h-24 rounded-xl bg-white border border-gray-200 p-4 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500 resize-none mb-4" 
-                    placeholder="Tuliskan catatan atau alasan keputusan Anda..."
-                  />
-                  <div className="flex gap-4">
-                    <Button className="flex-1 bg-green-600 hover:bg-green-700 text-white rounded-xl h-12 font-bold shadow-lg shadow-green-500/20">
-                      <Check className="w-5 h-5 mr-2" /> Setujui & Pulihkan Status
-                    </Button>
-                    <Button className="flex-1 bg-rose-500 hover:bg-rose-600 text-white rounded-xl h-12 font-bold shadow-lg shadow-rose-500/20">
-                      <X className="w-5 h-5 mr-2" /> Tolak Banding
-                    </Button>
-                  </div>
-                </div>
+            {/* Supervisor Decision Form */}
+            <div className="bg-slate-900 text-white rounded-3xl p-6 shadow-md space-y-4">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-teal-400">Form Keputusan Dewan Pengawas</h3>
+              
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-slate-300">Catatan Resmi Pengawas (`supervisor_notes` MR-04)</label>
+                <textarea 
+                  value={supervisorNotesInput}
+                  onChange={(e) => setSupervisorNotesInput(e.target.value)}
+                  className="w-full h-24 rounded-xl bg-slate-950 border border-slate-800 p-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#0eb7b7] resize-none"
+                  placeholder="Masukkan pertimbangan atau instruksi resmi Dewan Pengawas..."
+                />
               </div>
 
+              {activeAppeal.supervisorNotes && (
+                <div className="bg-slate-950 p-3 rounded-xl text-xs text-slate-300 border border-slate-800">
+                  <span className="text-teal-400 font-bold block mb-0.5">Catatan Tersimpan:</span>
+                  {activeAppeal.supervisorNotes}
+                </div>
+              )}
+
+              <div className="flex gap-3 pt-2">
+                <Button 
+                  onClick={() => handleApprove(activeAppeal.id)}
+                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl h-11 text-xs flex gap-2"
+                >
+                  <Check className="w-4 h-4" /> Setujui Banding & Pulihkan Status Aktif
+                </Button>
+
+                <Button 
+                  onClick={() => handleReject(activeAppeal.id)}
+                  variant="outline" 
+                  className="flex-1 border-slate-700 bg-slate-950 text-red-400 hover:bg-slate-800 hover:text-red-300 font-bold rounded-xl h-11 text-xs flex gap-2"
+                >
+                  <X className="w-4 h-4" /> Tolak Banding
+                </Button>
+              </div>
             </div>
 
           </div>
-        </div>
+        ) : null}
       </div>
 
     </div>
