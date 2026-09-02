@@ -1,6 +1,6 @@
 # Provokasi Web Application
 
-Aplikasi Portal Komunitas Provokasi (Next.js App Router).
+Portal Komunitas Provokasi (Next.js App Router).
 
-## Deploy Status
-Auto-deployed via Vercel GitHub Integration.
+## Deployment Status
+Live on Vercel: https://provokasi-apps.vercel.app/
