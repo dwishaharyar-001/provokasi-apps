@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { 
   Mountain, LayoutDashboard, CalendarDays, Vote, Wallet, Settings, User, Users, 
   ShieldAlert, Award, QrCode, Gavel, DollarSign, ChevronLeft, ChevronRight, 
-  ChevronDown, LayoutGrid, Sparkles
+  ChevronDown, FileText, LockKeyhole, FolderCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -18,6 +18,7 @@ const memberMenuItems = [
   { name: "Kegiatan (EV-01)", href: "/events", icon: CalendarDays },
   { name: "Musyawarah & Vote", href: "/governance", icon: Vote },
   { name: "Keuangan (FN-01)", href: "/finance", icon: Wallet },
+  { name: "Dokumen Legal (DC-01)", href: "/documents", icon: FileText },
   { name: "Pusat Banding (MR-04)", href: "/appeals", icon: User },
 ];
 
@@ -26,6 +27,7 @@ const adminSubMenuItems = [
   { name: "Scanner QR Presensi", href: "/admin/events/scanner", icon: QrCode },
   { name: "Ruang Kontrol Governance", href: "/admin/governance", icon: Gavel },
   { name: "Matriks Keuangan Nirlaba", href: "/admin/finance", icon: DollarSign },
+  { name: "Vault Legal & Dokumen", href: "/admin/documents", icon: FolderCheck },
   { name: "Audit Banding Pengawas", href: "/admin/appeals", icon: ShieldAlert },
 ];
 
@@ -85,13 +87,13 @@ export function Sidebar() {
               title={!isExpanded ? item.name : undefined}
               className={cn(
                 "group relative flex items-center rounded-2xl transition-all duration-200 cursor-pointer",
-                isExpanded ? "h-11 px-3.5 gap-3.5 w-full" : "h-11 w-11 justify-center mx-auto",
+                isExpanded ? "h-10 px-3.5 gap-3.5 w-full" : "h-10 w-10 justify-center mx-auto",
                 isActive 
                   ? "bg-white text-[#0d4f54] shadow-lg font-bold" 
                   : "text-white/70 hover:bg-white/10 hover:text-white"
               )}
             >
-              <item.icon className="h-5 w-5 shrink-0" />
+              <item.icon className="h-4.5 w-4.5 shrink-0" />
               
               {isExpanded && (
                 <span className="text-xs font-bold truncate">{item.name}</span>
@@ -127,14 +129,14 @@ export function Sidebar() {
             title={!isExpanded ? "Konsol Admin & Pengawas" : undefined}
             className={cn(
               "group relative flex items-center rounded-2xl transition-all duration-200 w-full text-left cursor-pointer",
-              isExpanded ? "h-11 px-3.5 justify-between" : "h-11 w-11 justify-center mx-auto",
+              isExpanded ? "h-10 px-3.5 justify-between" : "h-10 w-10 justify-center mx-auto",
               isAdminActive 
                 ? "bg-amber-400/20 text-amber-200 border border-amber-300/40 font-bold" 
                 : "text-white/80 hover:bg-white/10 hover:text-white"
             )}
           >
             <div className="flex items-center gap-3.5">
-              <ShieldAlert className="h-5 w-5 shrink-0 text-amber-300" />
+              <ShieldAlert className="h-4.5 w-4.5 shrink-0 text-amber-300" />
               {isExpanded && <span className="text-xs font-bold truncate">Konsol Admin</span>}
             </div>
 
@@ -145,7 +147,7 @@ export function Sidebar() {
             {/* Tooltip when collapsed */}
             {!isExpanded && (
               <span className="absolute left-16 rounded-lg bg-slate-900 border border-slate-700 px-3 py-1.5 text-xs font-bold text-white shadow-xl opacity-0 transition-all duration-200 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50">
-                Konsol Admin (5 Sub-Menu)
+                Konsol Admin (6 Sub-Menu)
               </span>
             )}
           </button>
@@ -160,7 +162,7 @@ export function Sidebar() {
                     key={subItem.name}
                     href={subItem.href}
                     className={cn(
-                      "flex items-center gap-2.5 h-9 px-3 rounded-xl text-xs transition-all cursor-pointer",
+                      "flex items-center gap-2.5 h-8 px-3 rounded-xl text-xs transition-all cursor-pointer",
                       isSubActive 
                         ? "bg-white text-[#0d4f54] font-black shadow-md" 
                         : "text-white/70 hover:bg-white/10 hover:text-white font-medium"
