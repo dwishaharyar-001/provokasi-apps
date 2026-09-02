@@ -3,4 +3,4 @@
 Portal Komunitas Provokasi (Next.js App Router).
 
 ## Deployment Status
-Live on Vercel: https://provokasi-apps.vercel.app/
+Live Production on Vercel: https://provokasi-apps.vercel.app/
