@@ -2,68 +2,79 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Mountain, MessageSquare, LayoutDashboard, CalendarDays, Vote, Wallet, FileText, Settings, User, Users, ShieldAlert } from "lucide-react";
+import { Mountain, LayoutDashboard, CalendarDays, Vote, Wallet, FileText, Settings, User, Users, ShieldAlert, Award, QrCode, Gavel } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const menuItems = [
-  { name: "Messages", href: "/messages", icon: MessageSquare },
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
-  { name: "Direktori", href: "/directory", icon: Users },
-  { name: "Agenda", href: "/events", icon: CalendarDays },
-  { name: "E-Voting", href: "/governance", icon: Vote },
-  { name: "Keuangan", href: "/finance", icon: Wallet },
-  { name: "Dokumen", href: "/legal", icon: FileText },
-  { name: "Banding", href: "/appeals", icon: User },
-  { name: "Admin (Pengawas)", href: "/admin/appeals", icon: ShieldAlert },
+  { name: "Kartu Anggota (MR-02)", href: "/membership", icon: Award },
+  { name: "Direktori Anggota", href: "/directory", icon: Users },
+  { name: "Kegiatan (EV-01)", href: "/events", icon: CalendarDays },
+  { name: "Musyawarah & E-Voting", href: "/governance", icon: Vote },
+  { name: "Pusat Banding (MR-04)", href: "/appeals", icon: User },
+  
+  // Section Admin & Pengawas
   { name: "Admin (Kegiatan)", href: "/admin/events", icon: CalendarDays },
+  { name: "Admin (Scanner QR)", href: "/admin/events/scanner", icon: QrCode },
+  { name: "Admin (Governance)", href: "/admin/governance", icon: Gavel },
+  { name: "Admin (Pengawas Banding)", href: "/admin/appeals", icon: ShieldAlert },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-screen w-[72px] flex-col items-center bg-[#0d4f54] py-6 shadow-xl z-10">
+    <div className="flex h-screen w-[76px] flex-col items-center bg-[#0d4f54] py-5 shadow-xl z-20 shrink-0">
       {/* Logo */}
-      <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-white">
-        <Mountain className="h-6 w-6" />
-      </div>
+      <Link href="/" className="mb-6 flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-white hover:bg-white/20 transition-colors">
+        <Mountain className="h-6 w-6 text-amber-300" />
+      </Link>
 
       {/* Nav Menu */}
-      <nav className="flex flex-1 flex-col items-center space-y-4">
-        {menuItems.map((item) => {
-          const isActive = pathname === item.href;
+      <nav className="flex flex-1 flex-col items-center space-y-2.5 overflow-y-auto scrollbar-hide w-full px-2">
+        {menuItems.map((item, idx) => {
+          const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href) && item.href.length > 1);
+          const isAdminDivider = idx === 6; // Index before Admin section
+          
           return (
-            <Link
-              key={item.name}
-              href={item.href}
-              title={item.name}
-              className={cn(
-                "group relative flex h-12 w-12 items-center justify-center rounded-2xl transition-all duration-200",
-                isActive 
-                  ? "bg-white text-[#0d4f54] shadow-md" 
-                  : "text-white/70 hover:bg-white/10 hover:text-white"
+            <div key={item.name} className="w-full flex flex-col items-center">
+              {isAdminDivider && (
+                <div className="w-8 h-[1px] bg-white/20 my-2"></div>
               )}
-            >
-              <item.icon className="h-5 w-5" />
-              {/* Tooltip on hover */}
-              <span className="absolute left-14 rounded-md bg-gray-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none whitespace-nowrap">
-                {item.name}
-              </span>
-            </Link>
+              
+              <Link
+                href={item.href}
+                title={item.name}
+                className={cn(
+                  "group relative flex h-11 w-11 items-center justify-center rounded-2xl transition-all duration-200",
+                  isActive 
+                    ? "bg-white text-[#0d4f54] shadow-lg font-bold scale-105" 
+                    : "text-white/70 hover:bg-white/10 hover:text-white"
+                )}
+              >
+                <item.icon className="h-5 w-5" />
+                {/* Tooltip on hover */}
+                <span className="absolute left-14 rounded-lg bg-slate-900 border border-slate-700 px-3 py-1.5 text-xs font-bold text-white shadow-xl opacity-0 transition-all duration-200 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50">
+                  {item.name}
+                </span>
+              </Link>
+            </div>
           );
         })}
       </nav>
 
       {/* Bottom Actions */}
-      <div className="mt-auto flex flex-col items-center space-y-4">
-        <Link href="/settings" className="flex h-12 w-12 items-center justify-center rounded-2xl text-white/70 hover:bg-white/10 hover:text-white transition-colors">
+      <div className="mt-auto flex flex-col items-center space-y-3 pt-4 border-t border-white/10 w-full">
+        <Link href="/settings" title="Pengaturan" className="flex h-10 w-10 items-center justify-center rounded-xl text-white/70 hover:bg-white/10 hover:text-white transition-colors">
           <Settings className="h-5 w-5" />
         </Link>
-        <Avatar className="h-10 w-10 border-2 border-white/20 cursor-pointer hover:border-white transition-colors">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback className="bg-[#0d4f54] text-white">DI</AvatarFallback>
-        </Avatar>
+        <Link href="/membership">
+          <Avatar className="h-10 w-10 border-2 border-amber-300/60 cursor-pointer hover:border-amber-300 transition-colors shadow-md">
+            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback className="bg-[#0d4f54] text-white font-bold">DI</AvatarFallback>
+          </Avatar>
+        </Link>
       </div>
     </div>
   );
