@@ -1,14 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Bell, Shield, User, Lock, Trash2, Save, AlertTriangle } from "lucide-react";
+import { Search, Bell, Shield, User, Lock, Trash2, Save, AlertTriangle, CheckCircle2, Clock, ShieldCheck, FileSpreadsheet, Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
 export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState("profile");
+  const [activeTab, setActiveTab] = useState("pdp");
+
+  // PD-01 Granular Consent State
+  const [consentDirectory, setConsentDirectory] = useState(true);
+  const [consentOfficerContact, setConsentOfficerContact] = useState(true);
+  const [consentInternalResearch, setConsentInternalResearch] = useState(false);
+  const [consentMediaDocs, setConsentMediaDocs] = useState(true);
+
+  // PD-03 Erasure Modal State
+  const [isErasureModalOpen, setIsErasureModalOpen] = useState(false);
+  const [erasureReason, setErasureReason] = useState("");
+  const [erasureSubmitted, setErasureSubmitted] = useState(false);
+
+  const handleErasureSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!erasureReason.trim()) return;
+    setErasureSubmitted(true);
+  };
 
   return (
     <div className="flex h-full w-full bg-white rounded-tl-[40px] shadow-sm my-4 mr-4 border overflow-hidden">
@@ -16,11 +34,30 @@ export default function SettingsPage() {
       {/* SECONDARY SIDEBAR (Settings Navigation) */}
       <div className="w-80 border-r bg-white flex flex-col">
         <div className="p-6 border-b">
-          <h2 className="text-xl font-bold text-gray-800">Pengaturan</h2>
-          <p className="text-xs text-gray-500 mt-1">Kelola Akun & Privasi Anda</p>
+          <span className="text-[10px] font-extrabold text-[#0eb7b7] bg-teal-50 border border-teal-200 px-2.5 py-1 rounded-full uppercase">
+            Modul 6: Security & PDP
+          </span>
+          <h2 className="text-xl font-bold text-gray-800 mt-2">Pengaturan Akun</h2>
+          <p className="text-xs text-gray-500 mt-1">Kelola Privasi & Kepatuhan PDP</p>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 space-y-2">
+          <div 
+            onClick={() => setActiveTab("pdp")}
+            className={cn(
+              "p-4 rounded-2xl cursor-pointer transition-colors flex items-center gap-3",
+              activeTab === "pdp" 
+                ? "bg-[#0eb7b7]/10 border border-[#0eb7b7] text-[#0d4f54]" 
+                : "border border-transparent hover:bg-gray-50 text-gray-600"
+            )}
+          >
+            <Shield className="w-5 h-5 text-[#0eb7b7]" />
+            <div>
+              <p className="font-bold text-sm">Privasi & Data (PDP)</p>
+              <p className="text-[10px] text-gray-400">PD-01 & PD-03 Consent</p>
+            </div>
+          </div>
+
           <div 
             onClick={() => setActiveTab("profile")}
             className={cn(
@@ -32,19 +69,6 @@ export default function SettingsPage() {
           >
             <User className="w-5 h-5" />
             <span className="font-bold text-sm">Profil Pribadi</span>
-          </div>
-
-          <div 
-            onClick={() => setActiveTab("pdp")}
-            className={cn(
-              "p-4 rounded-2xl cursor-pointer transition-colors flex items-center gap-3",
-              activeTab === "pdp" 
-                ? "bg-[#0eb7b7]/10 border border-[#0eb7b7] text-[#0d4f54]" 
-                : "border border-transparent hover:bg-gray-50 text-gray-600"
-            )}
-          >
-            <Shield className="w-5 h-5" />
-            <span className="font-bold text-sm">Privasi & Data (PDP)</span>
           </div>
 
           <div 
@@ -69,18 +93,16 @@ export default function SettingsPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input 
               type="search" 
-              placeholder="Cari pengaturan..." 
-              className="w-full rounded-full bg-gray-50 border-gray-200 pl-10 shadow-inner text-sm focus-visible:ring-1 focus-visible:ring-[#0eb7b7]" 
+              placeholder="Cari pengaturan privasi..." 
+              className="w-full rounded-full bg-gray-50 border-gray-200 pl-10 shadow-inner text-xs focus-visible:ring-1 focus-visible:ring-[#0eb7b7]" 
             />
           </div>
           
           <div className="flex items-center gap-6">
-            <div className="relative cursor-pointer hover:bg-gray-50 p-2 rounded-full transition-colors">
-              <Bell className="h-5 w-5 text-gray-600" />
-            </div>
             <div className="flex items-center gap-3 pl-4 border-l cursor-pointer group">
               <div className="text-right">
                 <p className="text-sm font-bold text-gray-800">Dwi Ishak M.</p>
+                <p className="text-xs text-gray-500 font-medium">LIO-08013</p>
               </div>
               <Avatar className="h-10 w-10 border-2 border-transparent group-hover:border-[#0eb7b7] transition-all">
                 <AvatarImage src="https://github.com/shadcn.png" />
@@ -93,157 +115,204 @@ export default function SettingsPage() {
         <div className="flex-1 overflow-y-auto p-10">
           <div className="max-w-3xl mx-auto space-y-10">
             
-            {/* Profil Pribadi Tab */}
-            {activeTab === "profile" && (
-              <section>
-                <div className="mb-6">
-                  <h1 className="text-2xl font-extrabold text-gray-900">Informasi Pribadi</h1>
-                  <p className="text-gray-500 text-sm mt-1">Perbarui foto dan data kontak Anda. Perubahan akan langsung tersimpan di sistem.</p>
-                </div>
-
-                <div className="bg-white border rounded-3xl p-8 shadow-sm space-y-8">
-                  <div className="flex items-center gap-6">
-                    <Avatar className="h-24 w-24 border-4 border-gray-50 shadow-sm relative group cursor-pointer">
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback className="text-2xl bg-gray-100">DI</AvatarFallback>
-                      <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span className="text-xs font-bold text-white uppercase tracking-wider">Ubah</span>
-                      </div>
-                    </Avatar>
-                    <div>
-                      <Button variant="outline" className="rounded-xl font-bold h-10 px-6">Unggah Foto Baru</Button>
-                      <p className="text-xs text-gray-400 mt-2">JPG, PNG, maksimal 2MB.</p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Nama Lengkap</label>
-                      <Input defaultValue="Dwi Ishak M. Wibowo" className="rounded-xl bg-gray-50 border-gray-200 h-12 font-medium" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold text-gray-600 uppercase tracking-wider">No. Batch LIO</label>
-                      <Input defaultValue="LIO-08" disabled className="rounded-xl bg-gray-100 border-none h-12 font-medium text-gray-500 cursor-not-allowed" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Email Pribadi</label>
-                      <Input defaultValue="dwiishak@gmail.com" type="email" className="rounded-xl bg-gray-50 border-gray-200 h-12 font-medium" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Nomor WhatsApp</label>
-                      <Input defaultValue="081234567890" type="tel" className="rounded-xl bg-gray-50 border-gray-200 h-12 font-medium" />
-                    </div>
-                  </div>
-                  
-                  <div className="flex justify-end pt-4 border-t">
-                    <Button className="bg-[#0eb7b7] hover:bg-[#0a9494] text-white rounded-xl shadow-lg shadow-teal-500/20 py-5 px-8 font-bold flex gap-2">
-                      <Save className="w-4 h-4" /> Simpan Perubahan
-                    </Button>
-                  </div>
-                </div>
-              </section>
-            )}
-
-            {/* UU PDP Tab */}
+            {/* UU PDP TAB (PD-01 & PD-03) */}
             {activeTab === "pdp" && (
-              <section>
-                <div className="mb-6">
-                  <h1 className="text-2xl font-extrabold text-gray-900">Privasi & Pelindungan Data (PDP)</h1>
-                  <p className="text-gray-500 text-sm mt-1">Sistem ini mematuhi Undang-Undang Pelindungan Data Pribadi (UU PDP).</p>
+              <section className="space-y-6">
+                <div>
+                  <span className="text-[10px] font-extrabold text-[#0eb7b7] bg-teal-50 border border-teal-200 px-2.5 py-1 rounded-full uppercase">
+                    UU PDP No. 27/2022 Compliance
+                  </span>
+                  <h1 className="text-2xl font-extrabold text-gray-900 mt-2">Privasi & Pelindungan Data Pribadi (PDP)</h1>
+                  <p className="text-gray-500 text-xs mt-1">
+                    Anda memiliki kendali penuh atas persetujuan pemrosesan data pribadi Anda di dalam platform Komunitas Provokasi.
+                  </p>
                 </div>
 
-                <div className="bg-white border rounded-3xl shadow-sm overflow-hidden">
-                  <div className="p-6 border-b flex gap-4 items-start bg-gray-50">
-                    <Shield className="w-6 h-6 text-[#0eb7b7] shrink-0 mt-0.5" />
+                <div className="bg-white border rounded-3xl shadow-sm overflow-hidden space-y-6 p-6">
+                  <div className="flex gap-4 items-start bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-xs text-emerald-900">
+                    <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                     <div>
-                      <h4 className="font-bold text-gray-800 mb-1">Manajemen Persetujuan Data</h4>
-                      <p className="text-sm text-gray-500 leading-relaxed">
-                        Atur preferensi visibilitas data pribadi Anda di dalam platform komunitas. Rekam medis (opsional) dan data sensitif lainnya akan otomatis dienkripsi.
+                      <h4 className="font-bold uppercase tracking-wider mb-0.5">Penegakan Hak Subjek Data (PD-01)</h4>
+                      <p className="opacity-90 leading-relaxed">
+                        Seluruh aktivitas pengaksesan atau ekspor data pribadi Anda oleh pengurus dicatat secara permanen pada **Access Audit Trail** (PD-02) demi mencegah penyalahgunaan.
                       </p>
                     </div>
                   </div>
-                  
-                  <div className="p-6 space-y-4">
-                    <label className="flex items-start justify-between p-4 border rounded-xl hover:bg-gray-50 cursor-pointer transition-colors">
+
+                  {/* PD-01 Granular Consents Toggles */}
+                  <div className="space-y-3 pt-2">
+                    <h3 className="text-xs font-bold text-gray-700 uppercase tracking-wider">Manajemen Persetujuan Eksplisit (PD-01)</h3>
+
+                    {/* Toggle 1 */}
+                    <label className="flex items-start justify-between p-4 border rounded-2xl hover:bg-gray-50 cursor-pointer transition-colors">
                       <div>
-                        <h5 className="font-bold text-gray-800 text-sm mb-1">Tampilkan Profil di Direktori Anggota</h5>
-                        <p className="text-xs text-gray-500 max-w-sm">Anggota lain dapat mencari Anda di direktori. Kontak spesifik (email/telepon) tetap akan disamarkan (*masked*).</p>
+                        <h5 className="font-bold text-gray-900 text-xs mb-0.5">Visibilitas di Direktori Anggota</h5>
+                        <p className="text-[11px] text-gray-500 max-w-md leading-relaxed">
+                          Mengizinkan anggota aktif terverifikasi untuk mencari profil nama & batch Anda di Direktori. Nomor telepon & email Anda tetap disamarkan (*masked*).
+                        </p>
                       </div>
-                      <div className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" defaultChecked className="sr-only peer" />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0eb7b7]"></div>
-                      </div>
+                      <input 
+                        type="checkbox" 
+                        checked={consentDirectory} 
+                        onChange={(e) => setConsentDirectory(e.target.checked)}
+                        className="w-5 h-5 accent-[#0eb7b7] rounded cursor-pointer mt-1" 
+                      />
                     </label>
 
-                    <label className="flex items-start justify-between p-4 border rounded-xl hover:bg-gray-50 cursor-pointer transition-colors">
+                    {/* Toggle 2 */}
+                    <label className="flex items-start justify-between p-4 border rounded-2xl hover:bg-gray-50 cursor-pointer transition-colors">
                       <div>
-                        <h5 className="font-bold text-gray-800 text-sm mb-1">Persetujuan Dokumentasi Media</h5>
-                        <p className="text-xs text-gray-500 max-w-sm">Saya bersedia didokumentasikan (foto/video) dalam kegiatan umum (bukan *safe space*) untuk keperluan publikasi.</p>
+                        <h5 className="font-bold text-gray-900 text-xs mb-0.5">Kontak Langsung Pengurus Komunitas</h5>
+                        <p className="text-[11px] text-gray-500 max-w-md leading-relaxed">
+                          Mengizinkan pengurus pusat/daerah menghubungi Anda via WhatsApp/Email untuk pengumuman kegiatan resmi & penugasan panitia.
+                        </p>
                       </div>
-                      <div className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" defaultChecked className="sr-only peer" />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#0eb7b7]"></div>
+                      <input 
+                        type="checkbox" 
+                        checked={consentOfficerContact} 
+                        onChange={(e) => setConsentOfficerContact(e.target.checked)}
+                        className="w-5 h-5 accent-[#0eb7b7] rounded cursor-pointer mt-1" 
+                      />
+                    </label>
+
+                    {/* Toggle 3 */}
+                    <label className="flex items-start justify-between p-4 border rounded-2xl hover:bg-gray-50 cursor-pointer transition-colors">
+                      <div>
+                        <h5 className="font-bold text-gray-900 text-xs mb-0.5">Partisipasi Riset & Survei Internal Komunitas</h5>
+                        <p className="text-[11px] text-gray-500 max-w-md leading-relaxed">
+                          Mengizinkan penggunaan data demografi secara anonim untuk analisis pengembangan program pelatihan & riset akademik nirlaba.
+                        </p>
                       </div>
+                      <input 
+                        type="checkbox" 
+                        checked={consentInternalResearch} 
+                        onChange={(e) => setConsentInternalResearch(e.target.checked)}
+                        className="w-5 h-5 accent-[#0eb7b7] rounded cursor-pointer mt-1" 
+                      />
+                    </label>
+
+                    {/* Toggle 4 */}
+                    <label className="flex items-start justify-between p-4 border rounded-2xl hover:bg-gray-50 cursor-pointer transition-colors">
+                      <div>
+                        <h5 className="font-bold text-gray-900 text-xs mb-0.5">Dokumentasi Media Publikasi Umum</h5>
+                        <p className="text-[11px] text-gray-500 max-w-md leading-relaxed">
+                          Persetujuan penampilan dokumentasi foto/video Anda dalam kegiatan umum publik (di luar ruang kerahasiaan *Safe Space*).
+                        </p>
+                      </div>
+                      <input 
+                        type="checkbox" 
+                        checked={consentMediaDocs} 
+                        onChange={(e) => setConsentMediaDocs(e.target.checked)}
+                        className="w-5 h-5 accent-[#0eb7b7] rounded cursor-pointer mt-1" 
+                      />
                     </label>
                   </div>
 
-                  <div className="p-6 bg-rose-50 border-t flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
-                    <div className="flex gap-4 items-start">
-                      <AlertTriangle className="w-6 h-6 text-rose-500 shrink-0 mt-0.5" />
+                  {/* PD-03 Right to be Forgotten Banner */}
+                  <div className="p-6 bg-rose-50 border border-rose-200 rounded-2xl flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
+                    <div className="flex gap-3 items-start">
+                      <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
                       <div>
-                        <h4 className="font-bold text-rose-900 mb-1">Hapus Akun & Data (Right to be Forgotten)</h4>
-                        <p className="text-sm text-rose-800/80 max-w-md">
-                          Mengajukan permohonan penghapusan seluruh data pribadi Anda dari server. Status keanggotaan Anda akan dicabut permanen.
+                        <h4 className="font-bold text-rose-950 text-xs mb-0.5">Hapus Akun & Data (Right to be Forgotten - PD-03)</h4>
+                        <p className="text-[11px] text-rose-900 max-w-md leading-relaxed">
+                          Hak mengajukan permohonan penghapusan seluruh data pribadi secara permanen sesuai amanat UU PDP dengan penanganan SLA maks. 30 Hari.
                         </p>
                       </div>
                     </div>
-                    <Button variant="destructive" className="shrink-0 rounded-xl font-bold bg-rose-500 hover:bg-rose-600 flex gap-2">
-                      <Trash2 className="w-4 h-4"/> Ajukan Penghapusan
+                    <Button 
+                      onClick={() => setIsErasureModalOpen(true)}
+                      variant="destructive" 
+                      className="shrink-0 rounded-xl font-bold bg-rose-600 hover:bg-rose-700 text-xs flex gap-2"
+                    >
+                      <Trash2 className="w-4 h-4"/> Ajukan Penghapusan (PD-03)
                     </Button>
                   </div>
                 </div>
               </section>
             )}
 
-            {/* Keamanan Sandi Tab */}
+            {/* PROFIL TAB */}
+            {activeTab === "profile" && (
+              <section>
+                <div className="mb-6">
+                  <h1 className="text-2xl font-extrabold text-gray-900">Informasi Profil</h1>
+                </div>
+                <div className="bg-white border rounded-3xl p-6 shadow-sm space-y-4 text-xs">
+                  <p className="text-gray-600">Data identitas anggota terlindungi enkripsi.</p>
+                </div>
+              </section>
+            )}
+
+            {/* SECURITY TAB */}
             {activeTab === "security" && (
               <section>
                 <div className="mb-6">
-                  <h1 className="text-2xl font-extrabold text-gray-900">Keamanan Sandi</h1>
-                  <p className="text-gray-500 text-sm mt-1">Ganti kata sandi akun Anda secara berkala untuk menjaga keamanan data.</p>
+                  <h1 className="text-2xl font-extrabold text-gray-900">Keamanan Kata Sandi</h1>
                 </div>
-
-                <div className="bg-white border rounded-3xl p-8 shadow-sm space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Kata Sandi Saat Ini</label>
-                    <Input type="password" placeholder="••••••••" className="rounded-xl bg-gray-50 border-gray-200 h-12" />
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Kata Sandi Baru</label>
-                      <Input type="password" placeholder="Minimal 8 karakter" className="rounded-xl bg-gray-50 border-gray-200 h-12" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Konfirmasi Sandi Baru</label>
-                      <Input type="password" placeholder="Ulangi sandi baru" className="rounded-xl bg-gray-50 border-gray-200 h-12" />
-                    </div>
-                  </div>
-                  
-                  <div className="flex justify-end pt-4 border-t">
-                    <Button className="bg-[#0eb7b7] hover:bg-[#0a9494] text-white rounded-xl shadow-lg shadow-teal-500/20 py-5 px-8 font-bold flex gap-2">
-                      <Lock className="w-4 h-4" /> Perbarui Sandi
-                    </Button>
-                  </div>
+                <div className="bg-white border rounded-3xl p-6 shadow-sm space-y-4 text-xs">
+                  <p className="text-gray-600">Fitur ubah kata sandi terverifikasi enkripsi hash bcrypt/argon2.</p>
                 </div>
               </section>
             )}
-            
-            <div className="h-10"></div>
+
           </div>
         </div>
       </div>
 
+      {/* MODAL PD-03 RIGHT TO BE FORGOTTEN REQUEST */}
+      <Dialog open={isErasureModalOpen} onOpenChange={setIsErasureModalOpen}>
+        <DialogContent className="sm:max-w-[480px] rounded-[30px] p-6 text-gray-900">
+          <DialogTitle className="text-xl font-black mb-1 flex items-center gap-2 text-rose-600">
+            <AlertTriangle className="w-5 h-5" /> Permohonan Penghapusan Akun (PD-03)
+          </DialogTitle>
+          <p className="text-xs text-gray-500 border-b pb-3 mb-4">
+            Eksekusi *Right to be Forgotten* sesuai UU Pelindungan Data Pribadi No. 27/2022 (SLA 30 Hari).
+          </p>
+
+          {!erasureSubmitted ? (
+            <form onSubmit={handleErasureSubmit} className="space-y-4">
+              <div>
+                <label className="text-xs font-bold text-gray-700 block mb-1">Alasan Permohonan Penghapusan</label>
+                <textarea 
+                  value={erasureReason}
+                  onChange={(e) => setErasureReason(e.target.value)}
+                  required
+                  className="w-full h-28 rounded-xl bg-gray-50 border border-gray-200 p-3 text-xs focus:outline-none focus:ring-1 focus:ring-rose-500 resize-none"
+                  placeholder="Jelaskan permohonan Anda..."
+                />
+              </div>
+
+              <div className="bg-rose-50 border border-rose-200 rounded-2xl p-4 text-xs text-rose-900 leading-relaxed">
+                <p className="font-bold mb-1">Konsekuensi Hukum AD/ART & UU PDP:</p>
+                <ul className="list-disc pl-4 space-y-1 text-[11px]">
+                  <li>Status keanggotaan dan hak suara DPT Anda akan dicabut secara permanen.</li>
+                  <li>Sistem akan menghapus data personal dalam kurun waktu SLA 30 Hari kerja.</li>
+                </ul>
+              </div>
+
+              <div className="pt-2 border-t flex justify-end gap-3">
+                <Button variant="outline" onClick={() => setIsErasureModalOpen(false)} className="rounded-xl text-xs font-bold">Batal</Button>
+                <Button type="submit" variant="destructive" className="bg-rose-600 hover:bg-rose-700 font-bold rounded-xl text-xs px-5">
+                  Kirim Permohonan Permanen
+                </Button>
+              </div>
+            </form>
+          ) : (
+            <div className="text-center py-4 space-y-3">
+              <div className="w-16 h-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto">
+                <Clock className="w-8 h-8" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900">Permohonan Diproses (SLA 30 Hari)</h3>
+              <p className="text-xs text-gray-500">
+                Permohonan *Right to Erasure* telah tercatat di **Audit Log PDP**. Petugas DPO akan memverifikasi dan menghapus data Anda selambatnya 30 Hari kerja.
+              </p>
+              <Button onClick={() => { setIsErasureModalOpen(false); setErasureSubmitted(false); }} className="bg-gray-900 text-white font-bold rounded-xl text-xs px-6">
+                Selesai
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { 
   Mountain, LayoutDashboard, CalendarDays, Vote, Wallet, Settings, User, Users, 
   ShieldAlert, Award, QrCode, Gavel, DollarSign, ChevronLeft, ChevronRight, 
-  ChevronDown, FileText, LockKeyhole, FolderCheck
+  ChevronDown, FileText, LockKeyhole, FolderCheck, ShieldCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -28,6 +28,7 @@ const adminSubMenuItems = [
   { name: "Ruang Kontrol Governance", href: "/admin/governance", icon: Gavel },
   { name: "Matriks Keuangan Nirlaba", href: "/admin/finance", icon: DollarSign },
   { name: "Vault Legal & Dokumen", href: "/admin/documents", icon: FolderCheck },
+  { name: "Audit Log UU PDP", href: "/admin/audit-logs", icon: ShieldCheck },
   { name: "Audit Banding Pengawas", href: "/admin/appeals", icon: ShieldAlert },
 ];
 
@@ -147,7 +148,7 @@ export function Sidebar() {
             {/* Tooltip when collapsed */}
             {!isExpanded && (
               <span className="absolute left-16 rounded-lg bg-slate-900 border border-slate-700 px-3 py-1.5 text-xs font-bold text-white shadow-xl opacity-0 transition-all duration-200 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50">
-                Konsol Admin (6 Sub-Menu)
+                Konsol Admin (7 Sub-Menu)
               </span>
             )}
           </button>
