@@ -21,6 +21,8 @@ CREATE TABLE IF NOT EXISTS public.profiles (
     phone VARCHAR(50),
     batch_number VARCHAR(20) NOT NULL, -- e.g. LIO-08
     membership_tier VARCHAR(50) DEFAULT 'Anggota Biasa' CHECK (membership_tier IN ('Anggota Biasa', 'Anggota Aktif', 'Anggota Kehormatan')),
+    system_role VARCHAR(20) DEFAULT 'MEMBER' CHECK (system_role IN ('MEMBER', 'BOARD', 'SYSTEM_ADMIN')), -- Peran admin & pengurus
+    registration_status VARCHAR(20) DEFAULT 'PENDING' CHECK (registration_status IN ('PENDING', 'APPROVED', 'REJECTED')), -- Status approval
     is_active_member BOOLEAN DEFAULT FALSE, -- Ditentukan oleh Evaluasi Engine MR-03 (Aturan 2 dari 3)
     has_gold_pin BOOLEAN DEFAULT FALSE, -- MR-02 Pin Emas Anggota Aktif
     card_expires_at TIMESTAMPTZ NOT NULL DEFAULT (NOW() + INTERVAL '3 years'), -- Masa berlaku 3 tahun

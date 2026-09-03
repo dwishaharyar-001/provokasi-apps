@@ -74,7 +74,7 @@ export function Sidebar() {
         <Link href="/membership" className="flex items-center gap-2">
           <Avatar className="h-8 w-8 border-2 border-amber-300/80 cursor-pointer">
             <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback className="bg-[#0d4f54] text-white font-bold text-[10px]">DI</AvatarFallback>
+            <AvatarFallback className="bg-[#0d4f54] text-white font-bold text-[10px]">PA</AvatarFallback>
           </Avatar>
         </Link>
       </header>
@@ -188,11 +188,11 @@ export function Sidebar() {
               <Link href="/membership" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3">
                 <Avatar className="h-9 w-9 border-2 border-amber-300/80">
                   <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback className="bg-[#0d4f54] text-white font-bold text-xs">DI</AvatarFallback>
+                  <AvatarFallback className="bg-[#0d4f54] text-white font-bold text-xs">PA</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-xs font-bold text-white leading-tight">Dwi Ishak M.</p>
-                  <p className="text-[10px] text-amber-300 font-extrabold uppercase">Anggota Aktif</p>
+                  <p className="text-xs font-bold text-white leading-tight">Provokasi-Admin Apps</p>
+                  <p className="text-[10px] text-amber-300 font-extrabold uppercase">System Administrator</p>
                 </div>
               </Link>
               <Link 
@@ -356,13 +356,13 @@ export function Sidebar() {
           <Link href="/membership" className="flex items-center gap-3">
             <Avatar className="h-9 w-9 border-2 border-amber-300/60 cursor-pointer hover:border-amber-300 transition-colors shadow-md shrink-0">
               <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback className="bg-[#0d4f54] text-white font-bold text-xs">DI</AvatarFallback>
+              <AvatarFallback className="bg-[#0d4f54] text-white font-bold text-xs">PA</AvatarFallback>
             </Avatar>
             
             {isExpanded && (
               <div className="overflow-hidden">
-                <p className="text-xs font-bold text-white truncate">Dwi Ishak M.</p>
-                <p className="text-[10px] text-amber-300 font-extrabold uppercase">Anggota Aktif</p>
+                <p className="text-xs font-bold text-white truncate">Provokasi-Admin Apps</p>
+                <p className="text-[10px] text-amber-300 font-extrabold uppercase">System Admin</p>
               </div>
             )}
           </Link>

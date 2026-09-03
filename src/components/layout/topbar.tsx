@@ -25,12 +25,12 @@ export function Topbar() {
         
         <div className="flex items-center gap-3 border-l pl-4 ml-2">
           <div className="text-right hidden sm:block">
-            <p className="text-sm font-semibold leading-none">Dwi Ishak</p>
-            <p className="text-xs text-muted-foreground mt-1">Anggota Aktif</p>
+            <p className="text-sm font-semibold leading-none">Provokasi-Admin Apps</p>
+            <p className="text-xs text-muted-foreground mt-1">System Administrator</p>
           </div>
           <Avatar className="h-10 w-10 border-2 border-primary/20">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@dwiishak" />
-            <AvatarFallback>DI</AvatarFallback>
+            <AvatarImage src="https://github.com/shadcn.png" alt="@admin" />
+            <AvatarFallback>PA</AvatarFallback>
           </Avatar>
         </div>
       </div>
