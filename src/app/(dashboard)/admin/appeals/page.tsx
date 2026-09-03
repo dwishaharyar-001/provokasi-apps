@@ -69,7 +69,7 @@ export default function AdminAppealsPage() {
     <div className="flex flex-col xl:flex-row min-h-full w-full bg-white rounded-xl lg:rounded-tl-[40px] shadow-sm my-2 lg:my-4 mr-0 lg:mr-4 border overflow-hidden">
       
       {/* SECONDARY SIDEBAR (Appeals Inbox) */}
-      <div className="w-full xl:w-80 border-b xl:border-b-0 xl:border-r bg-white flex flex-col shrink-0">
+      <div className="w-full xl:w-80 border-b xl:border-b-0 xl:border-r bg-white flex flex-col shrink-0 max-h-80 xl:max-h-none">
         <div className="p-4 sm:p-6 border-b bg-teal-50/50">
           <span className="text-[10px] font-extrabold text-[#0eb7b7] bg-teal-100 border border-teal-200 px-2.5 py-1 rounded-full uppercase">
             MR-04 Console
@@ -177,7 +177,7 @@ export default function AdminAppealsPage() {
                 </div>
               )}
 
-              <div className="flex gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Button 
                   onClick={() => handleApprove(activeAppeal.id)}
                   className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl h-11 text-xs flex gap-2"

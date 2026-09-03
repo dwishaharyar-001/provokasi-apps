@@ -63,18 +63,18 @@ export default function QRScannerPage() {
     <div className="flex flex-col min-h-full w-full bg-slate-950 rounded-xl lg:rounded-tl-[40px] shadow-sm my-2 lg:my-4 mr-0 lg:mr-4 border border-slate-800 overflow-hidden relative text-white">
       
       {/* Top Header Overlay */}
-      <div className="absolute top-0 left-0 w-full p-6 z-20 flex justify-between items-start bg-gradient-to-b from-black/90 via-black/50 to-transparent">
-        <div>
+      <div className="absolute top-0 left-0 w-full p-4 sm:p-6 z-20 flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-0 bg-gradient-to-b from-black/90 via-black/50 to-transparent">
+        <div className="w-full">
           <Link href="/admin/events" className="inline-flex items-center text-xs font-bold text-teal-400 hover:text-teal-300 mb-2 transition-colors">
             <ArrowLeft className="w-4 h-4 mr-1.5" /> Kembali ke Konsol Acara
           </Link>
           
-          <div className="flex items-center gap-3">
-            <h1 className="text-xl font-black text-white">Scanner Presensi EV-02</h1>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full">
+            <h1 className="text-lg sm:text-xl font-black text-white">Scanner Presensi EV-02</h1>
             <select 
               value={selectedEvent}
               onChange={(e) => setSelectedEvent(e.target.value)}
-              className="bg-slate-900 border border-slate-700 text-xs font-bold text-teal-300 rounded-xl px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-[#0eb7b7]"
+              className="bg-slate-900 border border-slate-700 text-xs font-bold text-teal-300 rounded-xl px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-[#0eb7b7] w-full sm:w-auto"
             >
               <option value="Leading From Within (18 Sept 2026)">Leading From Within (18 Sept 2026)</option>
               <option value="Strategi Resolusi Konflik (05 Okt 2026)">Strategi Resolusi Konflik (05 Okt 2026)</option>
@@ -82,7 +82,7 @@ export default function QRScannerPage() {
           </div>
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto sm:justify-end">
           <Button 
             onClick={() => setShowLogDrawer(prev => !prev)}
             variant="outline" 
@@ -103,7 +103,7 @@ export default function QRScannerPage() {
       <div className="flex-1 relative flex items-center justify-center">
         {/* Scanner Guideline Frame */}
         {scanStatus === "scanning" && (
-          <div className="relative z-10 w-72 h-72 border-2 border-[#0eb7b7] rounded-3xl flex items-center justify-center shadow-[0_0_0_9999px_rgba(2,6,23,0.75)]">
+          <div className="relative z-10 w-64 h-64 sm:w-72 sm:h-72 border-2 border-[#0eb7b7] rounded-3xl flex items-center justify-center shadow-[0_0_0_9999px_rgba(2,6,23,0.75)]">
             <ScanLine className="w-16 h-16 text-[#0eb7b7] animate-pulse" />
             
             {/* 4 Corners */}
@@ -175,15 +175,15 @@ export default function QRScannerPage() {
 
       {/* Slide-over Recent Check-in Log Panel */}
       {showLogDrawer && (
-        <div className="absolute top-20 right-6 z-30 w-80 bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-2xl space-y-4">
+        <div className="absolute top-[140px] sm:top-20 right-4 left-4 sm:left-auto sm:right-6 z-30 sm:w-80 bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-2xl space-y-4">
           <div className="flex justify-between items-center border-b border-slate-800 pb-3">
             <h3 className="font-bold text-sm text-white flex items-center gap-2">
               <History className="w-4 h-4 text-[#0eb7b7]" /> Feed Presensi Terkini
             </h3>
-            <button onClick={() => setShowLogDrawer(false)} className="text-xs font-bold text-slate-500 hover:text-white">Tutup</button>
+            <button onClick={() => setShowLogDrawer(false)} className="text-xs font-bold text-slate-500 hover:text-white p-2 -mr-2">Tutup</button>
           </div>
 
-          <div className="max-h-80 overflow-y-auto space-y-3 pr-1">
+          <div className="max-h-[50vh] sm:max-h-80 overflow-y-auto space-y-3 pr-1">
             {logs.map((log) => (
               <div key={log.id} className="flex items-center justify-between p-2.5 bg-slate-950/60 rounded-xl border border-slate-800">
                 <div className="flex items-center gap-3">
@@ -206,11 +206,11 @@ export default function QRScannerPage() {
       )}
 
       {/* Bottom Control Bar */}
-      <div className="h-20 bg-slate-950 z-20 flex items-center justify-center gap-4 pb-2 border-t border-slate-900">
+      <div className="py-4 sm:h-20 bg-slate-950 z-20 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-4 sm:pb-2 border-t border-slate-900">
         <Button 
           variant="outline" 
           onClick={handleSimulateScan}
-          className="rounded-full border-slate-700 bg-slate-900 text-white hover:bg-slate-800 hover:text-white text-xs font-bold px-6"
+          className="w-full sm:w-auto rounded-full border-slate-700 bg-slate-900 text-white hover:bg-slate-800 hover:text-white text-xs font-bold px-6"
         >
           ⚡ Simulasikan Scan QR Sukses
         </Button>
@@ -218,7 +218,7 @@ export default function QRScannerPage() {
         <Button 
           variant="ghost" 
           onClick={() => setScanStatus(prev => prev === "manual" ? "scanning" : "manual")}
-          className="rounded-full text-slate-400 hover:text-white hover:bg-slate-900 text-xs font-bold px-6"
+          className="w-full sm:w-auto rounded-full text-slate-400 hover:text-white hover:bg-slate-900 text-xs font-bold px-6"
         >
           {scanStatus === "manual" ? "Gunakan Kamera" : "Cari / Presensi Manual"}
         </Button>

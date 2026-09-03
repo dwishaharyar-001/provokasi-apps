@@ -112,7 +112,7 @@ export default function AdminEventsPage() {
     <div className="flex flex-col xl:flex-row min-h-full w-full bg-white rounded-xl lg:rounded-tl-[40px] shadow-sm my-2 lg:my-4 mr-0 lg:mr-4 border overflow-hidden">
       
       {/* SECONDARY SIDEBAR (Event Filters) */}
-      <div className="w-full xl:w-80 border-b xl:border-b-0 xl:border-r bg-white flex flex-col shrink-0">
+      <div className="w-full xl:w-80 border-b xl:border-b-0 xl:border-r bg-white flex flex-col shrink-0 max-h-80 xl:max-h-none">
         <div className="p-4 sm:p-6 border-b bg-teal-50/50">
           <h2 className="text-lg sm:text-xl font-bold text-gray-800 flex items-center gap-2">
             <Calendar className="w-5 h-5 text-[#0eb7b7]" />
@@ -182,8 +182,8 @@ export default function AdminEventsPage() {
               </div>
 
               {events.map((event) => (
-                <div key={event.id} className="p-6 border-b hover:bg-gray-50/70 transition-colors flex items-center justify-between">
-                  <div className="flex items-center gap-6 flex-1">
+                <div key={event.id} className="p-4 sm:p-6 border-b hover:bg-gray-50/70 transition-colors flex flex-col lg:flex-row lg:items-center justify-between gap-4 lg:gap-0">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 flex-1">
                     <div className="w-16 h-16 bg-teal-50 text-[#0eb7b7] rounded-2xl flex flex-col items-center justify-center border border-teal-100 shrink-0">
                       <span className="text-xs font-bold uppercase">{event.month}</span>
                       <span className="text-xl font-black leading-none mt-0.5">{event.day}</span>
@@ -210,11 +210,11 @@ export default function AdminEventsPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <Link href={`/admin/events/${event.id}/committee`}>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Link href={`/admin/events/${event.id}/committee`} className="w-full sm:w-auto">
                       <Button 
                         variant="outline" 
-                        className="rounded-xl border-[#0eb7b7] text-[#0eb7b7] hover:bg-teal-50 font-bold flex gap-1.5 text-xs"
+                        className="w-full sm:w-auto rounded-xl border-[#0eb7b7] text-[#0eb7b7] hover:bg-teal-50 font-bold flex gap-1.5 text-xs"
                       >
                         <Award className="w-4 h-4 text-[#0eb7b7]" /> Halaman Kepanitiaan EV-04
                       </Button>
@@ -229,8 +229,8 @@ export default function AdminEventsPage() {
                       <UserPlus className="w-4 h-4 text-gray-500" /> Quick Add
                     </Button>
                     
-                    <Link href="/admin/events/scanner">
-                      <Button variant="outline" className="rounded-xl border-gray-300 text-gray-700 hover:bg-gray-50 font-bold flex gap-2 text-xs">
+                    <Link href="/admin/events/scanner" className="w-full sm:w-auto">
+                      <Button variant="outline" className="w-full sm:w-auto rounded-xl border-gray-300 text-gray-700 hover:bg-gray-50 font-bold flex gap-2 text-xs">
                         <QrCode className="w-4 h-4 text-[#0eb7b7]" /> Scanner QR
                       </Button>
                     </Link>
@@ -246,8 +246,8 @@ export default function AdminEventsPage() {
 
       {/* EV-04: MODAL KELOLA PANITIA & FASILITATOR */}
       <Dialog open={!!activeManageEventId} onOpenChange={(open) => !open && setActiveManageEventId(null)}>
-        <DialogContent className="sm:max-w-[620px] rounded-[30px] p-6">
-          <DialogTitle className="text-2xl font-black text-gray-900 mb-1">
+        <DialogContent className="w-[95vw] sm:max-w-[620px] rounded-[24px] sm:rounded-[30px] p-4 sm:p-6 max-h-[90vh] overflow-y-auto">
+          <DialogTitle className="text-xl sm:text-2xl font-black text-gray-900 mb-1">
             Kelola Panitia & Fasilitator (EV-04)
           </DialogTitle>
           <p className="text-xs text-gray-500 font-medium border-b pb-3 mb-4">
@@ -291,22 +291,22 @@ export default function AdminEventsPage() {
           <div className="mt-6 border-t pt-4 space-y-4">
             <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Tambah Panitia Baru</h4>
             
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input 
                   type="search" 
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Cari anggota berdasarkan nama / NPA..." 
-                  className="rounded-xl pl-9 text-xs" 
+                  placeholder="Cari anggota..." 
+                  className="rounded-xl pl-9 text-xs w-full" 
                 />
               </div>
 
               <select 
                 value={selectedRole}
                 onChange={(e) => setSelectedRole(e.target.value as CommitteeMember["role"])}
-                className="text-xs font-bold bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-gray-700 focus:outline-none focus:ring-1 focus:ring-[#0eb7b7]"
+                className="text-xs font-bold bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-gray-700 focus:outline-none focus:ring-1 focus:ring-[#0eb7b7] w-full sm:w-auto"
               >
                 <option value="Ketua Panitia">Ketua Panitia</option>
                 <option value="Fasilitator Utama">Fasilitator Utama</option>

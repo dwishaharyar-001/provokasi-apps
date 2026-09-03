@@ -105,7 +105,7 @@ export default function EventsPage() {
     <div className="flex flex-col xl:flex-row min-h-full w-full bg-white rounded-xl lg:rounded-tl-[40px] shadow-sm my-2 lg:my-4 mr-0 lg:mr-4 border overflow-hidden">
       
       {/* 1. SECONDARY SIDEBAR (Event List) */}
-      <div className="w-full xl:w-80 border-b xl:border-b-0 xl:border-r bg-white flex flex-col shrink-0">
+      <div className="w-full xl:w-80 border-b xl:border-b-0 xl:border-r bg-white flex flex-col shrink-0 max-h-80 xl:max-h-none">
         <div className="p-4 sm:p-6 border-b">
           <h2 className="text-lg sm:text-xl font-bold text-gray-800">Direktori Kegiatan</h2>
           <div className="relative mt-4">
@@ -216,8 +216,8 @@ export default function EventsPage() {
                </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-8">
-              <div className="col-span-2 space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="col-span-1 lg:col-span-2 space-y-6">
                 <div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Deskripsi Agenda</h3>
                   <p className="text-gray-600 text-sm leading-relaxed">
