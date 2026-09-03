@@ -103,15 +103,15 @@ export default function AdminFinancePage() {
   };
 
   return (
-    <div className="flex h-full w-full bg-white rounded-tl-[40px] shadow-sm my-4 mr-4 border overflow-hidden">
+    <div className="flex flex-col xl:flex-row min-h-full w-full bg-white rounded-xl lg:rounded-tl-[40px] shadow-sm my-2 lg:my-4 mr-0 lg:mr-4 border overflow-hidden">
       
       {/* SECONDARY SIDEBAR (Expense Tiers & Requests) */}
-      <div className="w-80 border-r bg-white flex flex-col">
-        <div className="p-6 border-b bg-teal-50/50">
+      <div className="w-full xl:w-80 border-b xl:border-b-0 xl:border-r bg-white flex flex-col shrink-0">
+        <div className="p-4 sm:p-6 border-b bg-teal-50/50">
           <span className="text-[10px] font-extrabold text-[#0eb7b7] bg-teal-100 border border-teal-200 px-2.5 py-1 rounded-full uppercase">
             FN-03 & FN-04 Matrix Console
           </span>
-          <h2 className="text-xl font-bold text-gray-900 mt-2">Matriks Otorisasi</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900 mt-2">Matriks Otorisasi</h2>
           <p className="text-xs text-gray-500 mt-1">Approval Pengeluaran Nirlaba</p>
         </div>
 

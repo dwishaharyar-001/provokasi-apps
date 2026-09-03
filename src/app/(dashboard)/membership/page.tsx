@@ -53,30 +53,30 @@ export default function MembershipPage() {
   const isQualifiedActive = metCount >= 2;
 
   return (
-    <div className="flex h-full w-full bg-white rounded-tl-[40px] shadow-sm my-4 mr-4 border overflow-hidden">
+    <div className="flex flex-col xl:flex-row min-h-full w-full bg-white rounded-xl lg:rounded-tl-[40px] shadow-sm my-2 lg:my-4 mr-0 lg:mr-4 border overflow-hidden">
       
       {/* 1. LEFT SIDEBAR - Evaluation Summary & Badge */}
-      <div className="w-80 border-r bg-[#fafcfc] flex flex-col p-6 space-y-6">
+      <div className="w-full xl:w-80 border-b xl:border-b-0 xl:border-r bg-[#fafcfc] flex flex-col p-4 sm:p-6 space-y-4 sm:space-y-6 shrink-0">
         <div>
           <span className="text-[10px] font-extrabold text-[#0eb7b7] bg-teal-50 border border-teal-200 px-2.5 py-1 rounded-full uppercase tracking-wider">
             Modul 1: Membership
           </span>
-          <h2 className="text-xl font-black text-gray-900 mt-2">Status & Keaktifan</h2>
+          <h2 className="text-lg sm:text-xl font-black text-gray-900 mt-2">Status & Keaktifan</h2>
           <p className="text-xs text-gray-500 mt-1">Siklus Evaluasi 12 Bulan (MR-03)</p>
         </div>
 
         {/* MR-02 Gold Pin Status Card */}
-        <div className="bg-gradient-to-br from-amber-500 via-amber-600 to-yellow-600 text-white p-6 rounded-3xl shadow-xl relative overflow-hidden space-y-3">
+        <div className="bg-gradient-to-br from-amber-500 via-amber-600 to-yellow-600 text-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-xl relative overflow-hidden space-y-3">
           <div className="absolute top-0 right-0 w-24 h-24 bg-white opacity-10 rounded-full -mr-8 -mt-8"></div>
           <div className="flex justify-between items-center">
             <span className="text-[10px] font-extrabold bg-white/20 px-2.5 py-0.5 rounded-full uppercase tracking-widest text-white backdrop-blur-md">
               PIN EMAS AKTIF
             </span>
-            <Award className="w-6 h-6 text-amber-200" />
+            <Award className="w-5 h-5 sm:w-6 sm:h-6 text-amber-200" />
           </div>
 
           <div>
-            <p className="text-2xl font-black tracking-tight">Anggota Aktif</p>
+            <p className="text-xl sm:text-2xl font-black tracking-tight">Anggota Aktif</p>
             <p className="text-xs opacity-90 font-medium">Hak Suara DPT & Musyawarah Aktif</p>
           </div>
 
@@ -120,28 +120,28 @@ export default function MembershipPage() {
       </div>
 
       {/* 2. MAIN CONTENT AREA (Digital Card MR-02 & Evaluation Engine MR-03) */}
-      <div className="flex-1 flex flex-col bg-[#fcfdfd] overflow-y-auto p-10">
-        <div className="max-w-4xl mx-auto space-y-10 w-full">
+      <div className="flex-1 flex flex-col bg-[#fcfdfd] overflow-y-auto p-4 sm:p-6 lg:p-10 min-w-0">
+        <div className="max-w-4xl mx-auto space-y-6 sm:space-y-10 w-full">
           
           {/* MR-02 DIGITAL MEMBERSHIP CARD SECTION */}
           <div className="space-y-4">
-            <div className="flex justify-between items-end">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3">
               <div>
-                <p className="text-xs font-bold text-[#0eb7b7] uppercase tracking-widest">MR-02 Digital Membership Card</p>
-                <h1 className="text-2xl font-black text-gray-900">Kartu Anggota Digital</h1>
+                <p className="text-[10px] sm:text-xs font-bold text-[#0eb7b7] uppercase tracking-widest">MR-02 Digital Membership Card</p>
+                <h1 className="text-xl sm:text-2xl font-black text-gray-900">Kartu Anggota Digital</h1>
               </div>
 
               <Button 
                 onClick={() => setIsQRModalOpen(true)}
                 variant="outline" 
-                className="rounded-xl border-[#0eb7b7] text-[#0eb7b7] hover:bg-teal-50 font-bold text-xs flex gap-2"
+                className="w-full sm:w-auto rounded-xl border-[#0eb7b7] text-[#0eb7b7] hover:bg-teal-50 font-bold text-xs flex gap-2"
               >
                 <QrCode className="w-4 h-4" /> Tampilkan QR Code Kartu
               </Button>
             </div>
 
             {/* Premium Interactive Member Card */}
-            <div className="w-full max-w-lg mx-auto h-64 bg-gradient-to-br from-[#0d4f54] via-[#0eb7b7] to-[#087f7f] rounded-3xl p-7 text-white shadow-2xl relative overflow-hidden flex flex-col justify-between border border-teal-400/30">
+            <div className="w-full max-w-lg mx-auto min-h-[14rem] sm:h-64 bg-gradient-to-br from-[#0d4f54] via-[#0eb7b7] to-[#087f7f] rounded-2xl sm:rounded-3xl p-5 sm:p-7 text-white shadow-2xl relative overflow-hidden flex flex-col justify-between border border-teal-400/30">
               {/* Card Background Ornaments */}
               <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
               <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow-400/20 rounded-full -ml-10 -mb-10 blur-xl"></div>

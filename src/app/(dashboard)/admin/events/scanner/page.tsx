@@ -60,7 +60,7 @@ export default function QRScannerPage() {
   };
 
   return (
-    <div className="flex flex-col h-full w-full bg-slate-950 rounded-tl-[40px] shadow-sm my-4 mr-4 border border-slate-800 overflow-hidden relative text-white">
+    <div className="flex flex-col min-h-full w-full bg-slate-950 rounded-xl lg:rounded-tl-[40px] shadow-sm my-2 lg:my-4 mr-0 lg:mr-4 border border-slate-800 overflow-hidden relative text-white">
       
       {/* Top Header Overlay */}
       <div className="absolute top-0 left-0 w-full p-6 z-20 flex justify-between items-start bg-gradient-to-b from-black/90 via-black/50 to-transparent">

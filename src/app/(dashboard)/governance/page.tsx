@@ -81,13 +81,13 @@ export default function GovernancePage() {
   };
 
   return (
-    <div className="flex h-full w-full bg-white rounded-tl-[40px] shadow-sm my-4 mr-4 border overflow-hidden">
+    <div className="flex flex-col xl:flex-row min-h-full w-full bg-white rounded-xl lg:rounded-tl-[40px] shadow-sm my-2 lg:my-4 mr-0 lg:mr-4 border overflow-hidden">
       
       {/* 1. SECONDARY SIDEBAR (Assembly Agendas & DPT Status) */}
-      <div className="w-80 border-r bg-white flex flex-col">
-        <div className="p-6 border-b space-y-4">
+      <div className="w-full xl:w-80 border-b xl:border-b-0 xl:border-r bg-white flex flex-col shrink-0">
+        <div className="p-4 sm:p-6 border-b space-y-4">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold text-gray-800">Musyawarah & Vote</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-gray-800">Musyawarah & Vote</h2>
             <span className="text-[10px] font-extrabold px-2 py-0.5 bg-teal-50 border border-teal-200 text-[#0eb7b7] rounded-full uppercase">
               Modul 3
             </span>

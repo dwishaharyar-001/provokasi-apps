@@ -122,10 +122,10 @@ export default function CommitteeManagementPage({ params }: { params: Promise<{ 
   const confirmedCount = roster.filter(r => r.status === "Confirmed").length;
 
   return (
-    <div className="flex h-full w-full bg-white rounded-tl-[40px] shadow-sm my-4 mr-4 border overflow-hidden">
+    <div className="flex flex-col xl:flex-row min-h-full w-full bg-white rounded-xl lg:rounded-tl-[40px] shadow-sm my-2 lg:my-4 mr-0 lg:mr-4 border overflow-hidden">
       
       {/* 1. LEFT SIDEBAR - Event Quick Summary & Policy */}
-      <div className="w-80 border-r bg-[#fafcfc] flex flex-col p-6 space-y-6">
+      <div className="w-full xl:w-80 border-b xl:border-b-0 xl:border-r bg-[#fafcfc] flex flex-col p-4 sm:p-6 space-y-4 sm:space-y-6 shrink-0">
         <div>
           <Link href="/admin/events" className="inline-flex items-center text-xs font-bold text-gray-500 hover:text-[#0eb7b7] transition-colors mb-4">
             <ArrowLeft className="w-3.5 h-3.5 mr-1.5" /> Kembali ke Manajemen Event

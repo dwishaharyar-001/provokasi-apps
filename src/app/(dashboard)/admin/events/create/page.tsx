@@ -13,15 +13,15 @@ export default function EventBuilderPage() {
   const [isPaid, setIsPaid] = useState(false);
 
   return (
-    <div className="flex h-full w-full bg-[#fcfdfd] rounded-tl-[40px] shadow-sm my-4 mr-4 border overflow-hidden">
+    <div className="flex flex-col xl:flex-row min-h-full w-full bg-[#fcfdfd] rounded-xl lg:rounded-tl-[40px] shadow-sm my-2 lg:my-4 mr-0 lg:mr-4 border overflow-hidden">
       
       {/* 1. SECONDARY SIDEBAR (Builder Steps/Navigation) */}
-      <div className="w-80 border-r bg-white flex flex-col">
-        <div className="p-6 border-b">
-          <Link href="/admin/events" className="inline-flex items-center text-sm font-bold text-gray-400 hover:text-[#0eb7b7] mb-6 transition-colors">
+      <div className="w-full xl:w-80 border-b xl:border-b-0 xl:border-r bg-white flex flex-col shrink-0">
+        <div className="p-4 sm:p-6 border-b">
+          <Link href="/admin/events" className="inline-flex items-center text-sm font-bold text-gray-400 hover:text-[#0eb7b7] mb-4 sm:mb-6 transition-colors">
             <ArrowLeft className="w-4 h-4 mr-2" /> Kembali
           </Link>
-          <h2 className="text-xl font-bold text-gray-800">Event Builder</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-gray-800">Event Builder</h2>
           <p className="text-xs text-gray-500 mt-1">Buat jadwal agenda baru</p>
         </div>
 

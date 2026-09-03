@@ -22,16 +22,16 @@ const dummyMembers = [
 
 export default function DirectoryPage() {
   return (
-    <div className="flex h-full w-full bg-white rounded-tl-[40px] shadow-sm my-4 mr-4 border overflow-hidden">
+    <div className="flex flex-col xl:flex-row min-h-full w-full bg-white rounded-xl lg:rounded-tl-[40px] shadow-sm my-2 lg:my-4 mr-0 lg:mr-4 border overflow-hidden">
       
       {/* SECONDARY SIDEBAR (Filters) */}
-      <div className="w-80 border-r bg-white flex flex-col">
-        <div className="p-6 border-b">
-          <h2 className="text-xl font-bold text-gray-800">Direktori Anggota</h2>
+      <div className="w-full xl:w-80 border-b xl:border-b-0 xl:border-r bg-white flex flex-col shrink-0">
+        <div className="p-4 sm:p-6 border-b">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-800">Direktori Anggota</h2>
           <p className="text-xs text-gray-500 mt-1">Jejaring Alumni LIO</p>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="max-h-60 xl:max-h-none xl:flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
           <div className="space-y-3">
             <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2">
               <Filter className="w-3 h-3" /> Filter Batch
@@ -48,41 +48,41 @@ export default function DirectoryPage() {
             <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Status Keanggotaan</h3>
             <label className="flex items-center gap-3 cursor-pointer">
               <input type="checkbox" defaultChecked className="w-4 h-4 accent-[#0eb7b7]" />
-              <span className="text-sm font-semibold text-gray-700">Anggota Aktif</span>
+              <span className="text-xs sm:text-sm font-semibold text-gray-700">Anggota Aktif</span>
             </label>
             <label className="flex items-center gap-3 cursor-pointer">
               <input type="checkbox" defaultChecked className="w-4 h-4 accent-[#0eb7b7]" />
-              <span className="text-sm font-semibold text-gray-700">Anggota Biasa</span>
+              <span className="text-xs sm:text-sm font-semibold text-gray-700">Anggota Biasa</span>
             </label>
             <label className="flex items-center gap-3 cursor-pointer">
               <input type="checkbox" defaultChecked className="w-4 h-4 accent-[#0eb7b7]" />
-              <span className="text-sm font-semibold text-gray-700">Pengurus / Pengawas</span>
+              <span className="text-xs sm:text-sm font-semibold text-gray-700">Pengurus / Pengawas</span>
             </label>
           </div>
         </div>
       </div>
 
       {/* MAIN CONTENT AREA */}
-      <div className="flex-1 flex flex-col bg-[#fcfdfd]">
-        <div className="h-20 border-b flex items-center justify-between px-8 bg-white">
-          <div className="relative w-96">
+      <div className="flex-1 flex flex-col bg-[#fcfdfd] min-w-0">
+        <div className="py-3 px-4 sm:px-8 border-b flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white">
+          <div className="relative w-full sm:w-72 md:w-96">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input 
               type="search" 
               placeholder="Cari nama anggota..." 
-              className="w-full rounded-full bg-gray-50 border-gray-200 pl-10 shadow-inner text-sm focus-visible:ring-1 focus-visible:ring-[#0eb7b7]" 
+              className="w-full rounded-full bg-gray-50 border-gray-200 pl-10 shadow-inner text-xs sm:text-sm focus-visible:ring-1 focus-visible:ring-[#0eb7b7]" 
             />
           </div>
           
-          <div className="flex items-center gap-6">
+          <div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6">
             <div className="relative cursor-pointer hover:bg-gray-50 p-2 rounded-full transition-colors">
-              <Bell className="h-5 w-5 text-gray-600" />
+              <Bell className="h-4.5 w-4.5 sm:h-5 sm:w-5 text-gray-600" />
             </div>
-            <div className="flex items-center gap-3 pl-4 border-l cursor-pointer group">
+            <div className="flex items-center gap-2.5 sm:gap-3 pl-3 sm:pl-4 border-l cursor-pointer group">
               <div className="text-right">
-                <p className="text-sm font-bold text-gray-800">Dwi Ishak M.</p>
+                <p className="text-xs sm:text-sm font-bold text-gray-800">Dwi Ishak M.</p>
               </div>
-              <Avatar className="h-10 w-10 border-2 border-transparent group-hover:border-[#0eb7b7] transition-all">
+              <Avatar className="h-8 w-8 sm:h-10 sm:w-10 border-2 border-transparent group-hover:border-[#0eb7b7] transition-all">
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>DI</AvatarFallback>
               </Avatar>
@@ -90,8 +90,8 @@ export default function DirectoryPage() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             
             {dummyMembers.map(member => (
               <Dialog key={member.id}>
